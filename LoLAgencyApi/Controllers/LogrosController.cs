@@ -12,6 +12,7 @@ using LoLAgencyApi.Repositorio;
 using Newtonsoft.Json;
 using RiotApi.Net.RestClient;
 using RiotApi.Net.RestClient.Configuration;
+using RiotApi.Net.RestClient.Dto.Match.Generic;
 
 namespace LoLAgencyApi.Controllers
 {
@@ -188,6 +189,19 @@ namespace LoLAgencyApi.Controllers
             Logros.server = id_server;
             Logros.num_invocador = num_invocador;
             Logros.division = division;
+            float sum = 0;
+            float kills = 0;
+            float assist = 0;
+            foreach (var o in stats)
+            {
+                assist += o.Assists;
+                kills += o.Kills;
+            
+                sum += o.Deaths;
+            }
+            Logros.kda = (assist + kills)/sum;
+
+
            var existe= Repositorio.Get(o => o.num_invocador == Logros.num_invocador);
             if(existe!=null)
 

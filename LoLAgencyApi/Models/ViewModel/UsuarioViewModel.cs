@@ -41,7 +41,7 @@ namespace LoLAgencyApi.Models.ViewModel
         public int macarra { get; set; }
         public int maton { get; set; }
       public int overlord { get; set; }
-        public double kda { get; set; }
+        public float kda { get; set; }
       public string division { get; set; }
         public int server { get; set; }
 

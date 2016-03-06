@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
@@ -21,21 +22,22 @@ namespace LoLAgencyApi.Controllers
         private readonly UtilsRiot _utilsRiot;
         public IRiotClient riotClient = new RiotClient(ConfigurationManager.AppSettings["apikey"]);
         public IRepositorio<Usuarios, UsuarioViewModel> Repositorio { get; set; }
-
+        public List< ParticipantStats> _stats = new List<ParticipantStats>();
         public LogrosController()
         {
             var db = new MedallasEntities();
             Repositorio = new Repositorio<Usuarios, UsuarioViewModel>(db);
-            _utilsRiot = new UtilsRiot(this);
+            _utilsRiot = new UtilsRiot();
+           
         }
-
+        
      
 
         [HttpGet]
         [ResponseType(typeof (string))]
         public IHttpActionResult DameDivision(long jugador, RiotApiConfig.Regions servidor)
         {
-           
+         
             try
             {
                 var summoner = riotClient.League.GetSummonerLeaguesByIds(servidor, jugador).FirstOrDefault().Value;
@@ -76,6 +78,33 @@ namespace LoLAgencyApi.Controllers
             {
                 return NotFound();
             }
+        }
+        [HttpGet]
+        public IHttpActionResult DameListaPartidas(long jugador, RiotApiConfig.Regions servidor, int lastindex)
+        {
+            _stats = _utilsRiot.ListadePartidas(jugador, servidor, lastindex);
+           
+            return Ok(_stats);
+
+        }
+        [HttpGet]
+        public IHttpActionResult DameKDA(List<ParticipantStats> stats )
+        {
+        
+            float sum = 0;
+            float kills = 0;
+            float assist = 0;
+            foreach (var o in _stats)
+            {
+                assist += o.Assists;
+                kills += o.Kills;
+
+                sum += o.Deaths;
+            }
+           var kda = (assist + kills) / sum;
+
+            return Ok(kda);
+
         }
 
         [HttpGet]

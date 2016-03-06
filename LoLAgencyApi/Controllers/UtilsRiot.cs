@@ -24,58 +24,54 @@ namespace LoLAgencyApi.Controllers
 {
     public class UtilsRiot
     {
-       // public RiotSharp.RiotApi api = RiotSharp.RiotApi.GetInstance(ConfigurationManager.AppSettings["apikey"]);
-       private LogrosController _logrosController;
+        private const string Temporada = "SEASON2016";
+        // public RiotSharp.RiotApi api = RiotSharp.RiotApi.GetInstance(ConfigurationManager.AppSettings["apikey"]);
+       
         public IRiotClient riotClient = new RiotClient(ConfigurationManager.AppSettings["apikey"]);
 
-        private List<ParticipantStats> estadisticas= new List<ParticipantStats>();
+       
         public IRepositorio<Usuarios, UsuarioViewModel> Repositorio { get; set; }
 
-        private int lastindex { get; set; }
-        public List<ParticipantStats> Estadisticas
-        {
-            get
-            {
-                return estadisticas;
-            }
-
-            set
-            {
-                estadisticas = value;
-            }
-        }
-
-      
+ 
 
         
-
         
-        public UtilsRiot(LogrosController logrosController)
+        public List<ParticipantStats> ListadePartidas(long jugador, RiotApiConfig.Regions servidor, int lastindex=0)
         {
-            _logrosController = logrosController;
-          
-        }
-        public List<ParticipantStats> ListadePartidas(long jugador, RiotApiConfig.Regions servidor)
-        {
-           
-            var matchList = ListaPartidas(jugador, servidor,lastindex);
 
 
-
-            if (matchList.TotalGames != 0)
+             List<ParticipantStats> estadisticas = new List<ParticipantStats>();
+        MatchListDto matchList = new MatchListDto();
+            //       string ranktype=
+            try
             {
-                CargarEstadisticas(matchList, jugador, servidor);
+                var total_games =
+                    riotClient.MatchList.GetMatchListBySummonerId(servidor, jugador, null,
+                        Enums.GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5x5.ToString(), Temporada).TotalGames;
+                matchList = riotClient.MatchList.GetMatchListBySummonerId(servidor, jugador, null, Enums.GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5x5.ToString(), Temporada, null, null, lastindex, total_games);
+                if (total_games != 0)
+                {
+                    estadisticas= CargarEstadisticas(matchList, jugador, servidor);
+
+                }
+              
+            }
+            catch (Exception e)
+            {
 
             }
+
+
             return estadisticas;
+
 
         }
       
     
-        public void CargarEstadisticas(MatchListDto matchList, long id, RiotApiConfig.Regions servidor)
+        public List<ParticipantStats> CargarEstadisticas(MatchListDto matchList, long id, RiotApiConfig.Regions servidor)
         {
             //        RiotApiConfig.Regions.EUW
-         
+            List<ParticipantStats> estadisticas = new List<ParticipantStats>();
             foreach (var partida in matchList.Matches)
             {
                 System.Threading.Thread.Sleep(1000);
@@ -83,7 +79,7 @@ namespace LoLAgencyApi.Controllers
                 int participant_id =  GetIDParticipante(detalles_partida, id);
                 estadisticas.Add(GetEstadisticasDetalladas(detalles_partida, participant_id));
             }
-     
+            return estadisticas;
         }
 
 
@@ -107,23 +103,6 @@ namespace LoLAgencyApi.Controllers
             return participantes.Stats;
         }
 
-        public  MatchListDto ListaPartidas(long id, RiotApiConfig.Regions servidor, int lastindex)
-        {
-            MatchListDto matchList = new MatchListDto();
-            //       string ranktype=
-            try
-            {
-                var total_games =
-                    riotClient.MatchList.GetMatchListBySummonerId(servidor, id, null,
-                        Enums.GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5x5.ToString(), "SEASON2016").TotalGames;
-                 matchList =  riotClient.MatchList.GetMatchListBySummonerId(servidor, id, null, Enums.GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5x5.ToString(), "SEASON2016",null,null,lastindex,total_games);
-              
-            }
-            catch (Exception e)
-            {
-
-            }
-            return matchList;
-        }
+       
     }
 }

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoLAgencyApi", "LoLAgencyApi\LoLAgencyApi.csproj", "{605BF9C8-5F41-43A7-99B2-E8E3898B101E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AriGoldWeb", "AriGoldWeb\AriGoldWeb.csproj", "{E23649A2-D505-4777-A50E-C951691CB10F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{605BF9C8-5F41-43A7-99B2-E8E3898B101E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{605BF9C8-5F41-43A7-99B2-E8E3898B101E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{605BF9C8-5F41-43A7-99B2-E8E3898B101E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{605BF9C8-5F41-43A7-99B2-E8E3898B101E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E23649A2-D505-4777-A50E-C951691CB10F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E23649A2-D505-4777-A50E-C951691CB10F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E23649A2-D505-4777-A50E-C951691CB10F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E23649A2-D505-4777-A50E-C951691CB10F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

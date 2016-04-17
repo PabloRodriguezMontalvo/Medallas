@@ -42,6 +42,7 @@
           <Property Name="maton" Type="int" Nullable="false" />
           <Property Name="server" Type="int" Nullable="false" />
           <Property Name="overlord" Type="int" Nullable="false" />
+          <Property Name="kda" Type="decimal" Precision="18" Scale="0" Nullable="false" />
         </EntityType>
         <EntityContainer Name="MedallasModelStoreContainer">
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
@@ -87,6 +88,7 @@
           <Property Name="maton" Type="Int32" Nullable="false" />
           <Property Name="server" Type="Int32" Nullable="false" />
           <Property Name="overlord" Type="Int32" Nullable="false" />
+          <Property Name="kda" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
         </EntityType>
         <EntityContainer Name="MedallasEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
@@ -100,6 +102,7 @@
           <EntitySetMapping Name="Usuarios">
             <EntityTypeMapping TypeName="MedallasModel.Usuarios">
               <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="kda" ColumnName="kda" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="num_invocador" ColumnName="num_invocador" />
                 <ScalarProperty Name="nick" ColumnName="nick" />

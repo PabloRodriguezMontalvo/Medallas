@@ -47,5 +47,6 @@ namespace LoLAgencyApi.Models
         public int maton { get; set; }
         public int server { get; set; }
         public int overlord { get; set; }
+        public decimal kda { get; set; }
     }
 }

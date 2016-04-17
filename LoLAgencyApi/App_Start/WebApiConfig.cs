@@ -23,11 +23,18 @@ namespace LoLAgencyApi
                 routeTemplate: "api/{controller}/{action}/{jugador}/{servidor}",
              defaults: new { servidor = RouteParameter.Optional }
             );
+
+         
             config.Routes.MapHttpRoute(
                name: "DefaultApi2",
                routeTemplate: "api/{controller}/{action}/{jugador}/"
           
            );
+            config.Routes.MapHttpRoute(
+             name: "MasCompleto",
+             routeTemplate: "api/{controller}/{action}/{jugador}/{servidor}/{lastindex}"
+     
+         );
         }
     }
 }

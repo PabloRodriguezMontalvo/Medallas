@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.Entity.Core;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.ModelBinding;
@@ -58,7 +59,7 @@ namespace LoLAgencyApi.Controllers
             }
             catch (Exception e)
             {
-
+                throw e.InnerException;
             }
 
 
@@ -72,12 +73,26 @@ namespace LoLAgencyApi.Controllers
         {
             //        RiotApiConfig.Regions.EUW
             List<ParticipantStats> estadisticas = new List<ParticipantStats>();
+
             foreach (var partida in matchList.Matches)
             {
-                System.Threading.Thread.Sleep(1000);
-                MatchDetail detalles_partida = riotClient.Match.GetMatchById(servidor, partida.MatchId, false);
-                int participant_id =  GetIDParticipante(detalles_partida, id);
-                estadisticas.Add(GetEstadisticasDetalladas(detalles_partida, participant_id));
+                try
+                {
+                    System.Threading.Thread.Sleep(1000);
+                    MatchDetail detalles_partida = riotClient.Match.GetMatchById(servidor, partida.MatchId, false);
+                    if (detalles_partida != null)
+                    {
+                        int participant_id = GetIDParticipante(detalles_partida, id);
+                        estadisticas.Add(GetEstadisticasDetalladas(detalles_partida, participant_id));
+                    }
+                  
+                }
+                catch (WebException e)
+                {
+                    
+                    throw e.InnerException; 
+                }
+             
             }
             return estadisticas;
         }

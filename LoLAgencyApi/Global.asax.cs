@@ -28,6 +28,7 @@ namespace LoLAgencyApi
             //}
             GlobalConfiguration.Configure(WebApiConfig.Register);
             UnityConfig.RegisterComponents();
+
         }
     }
 }

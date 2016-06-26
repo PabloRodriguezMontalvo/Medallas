@@ -1,4 +1,4 @@
-﻿var app = angular.module('MyApp', ['ui.bootstrap']);
+﻿var app = angular.module('MyApp', ['toaster', 'ngAnimate']);
 
 app.factory('crudMedals', function ($http) {
     crudUserObj = {};
@@ -14,16 +14,19 @@ app.factory('crudMedals', function ($http) {
         return Users;
     };
 
-    crudUserObj.GetDatosInvocador = function (server,nombre) {
+    crudUserObj.GetDatosInvocador = function (server, nombre) {
         var Users;
 
         Users = $http({ method: 'Get', url: '/Home/GetDatos/', params: { server: server, nombre: nombre } }).
         then(function (response) {
                 if (response.data == "") {
+               
                     return ""; 
+
                 } else {
+                 
                  return response.data;
-                  
+               
                 }
             });
       
@@ -35,8 +38,9 @@ app.factory('crudMedals', function ($http) {
     return crudUserObj;
 });
 
-app.controller('medalsController', function ($scope, crudMedals) {
-
+app.controller('medalsController', function ($scope, crudMedals, toaster) {
+  
+    
     //crudMedals.getAll().then(function (result) {
     //    $scope.Users = result;
     //});
@@ -65,7 +69,9 @@ app.controller('medalsController', function ($scope, crudMedals) {
     label: 'LAS'
     }];
 
-    $scope.server = $scope.servers[0] ;
+    $scope.server = $scope.servers[0];
+
+  
     $scope.GetDatosInvocador = function (server, nombre) {
         $scope.loading = true;
         crudMedals.GetDatosInvocador(server, nombre).then(function (result) {
@@ -75,10 +81,18 @@ app.controller('medalsController', function ($scope, crudMedals) {
             $scope.platinum = false;
             $scope.diamond = false;
             if (result == "") {
+                toaster.pop('error', "No se ha encontrado", "ni una puta mierda");
                 $scope.noencontrado = true;
             } else {
                 $scope.noencontrado = false;
-               if (result.division == '"BRONZE"') {
+                toaster.pop('success', "OH YEAH", "BABY");
+                if (result.doble_doble == true) {
+                    $scope.doble_doble = true;
+                }
+                if (result.pentakill == true) {
+                    $scope.doble_doble = true;
+                }
+               if (result.division == 'Bronze') {
                 $scope.bronze = true;
                 $scope.silver = false;
                 $scope.gold = false;
@@ -86,28 +100,28 @@ app.controller('medalsController', function ($scope, crudMedals) {
                 $scope.diamond = false;
 
             }
-            if (result.division == '"SILVER"') {
+            if (result.division == 'Silver') {
                 $scope.bronze = false;
                 $scope.silver = true;
                 $scope.gold = false;
                 $scope.platinum = false;
                 $scope.diamond = false;
             }
-            if (result.division == '"GOLD"') {
+            if (result.division == 'Gold') {
                 $scope.bronze = false;
                 $scope.silver = false;
                 $scope.gold = true;
                 $scope.platinum = false;
                 $scope.diamond = false;
             }
-            if (result.division == '"PLATINUM"') {
+            if (result.division == 'Platinum') {
                 $scope.bronze = false;
                 $scope.silver = false;
                 $scope.gold = false;
                 $scope.platinum = true;
                 $scope.diamond = false;
             }
-            if (result.division == '"DIAMOND"') {
+            if (result.division == 'Diamond') {
                 $scope.bronze = false;
                 $scope.silver = false;
                 $scope.gold = false;
@@ -120,6 +134,7 @@ app.controller('medalsController', function ($scope, crudMedals) {
            
         }).finally(function () {
             // called no matter success or failure
+         
             $scope.loading = false;
         });;
     };

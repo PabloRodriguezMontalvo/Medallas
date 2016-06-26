@@ -1,14 +1,20 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/1.1.0/toaster.min.css" rel="stylesheet" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/1.1.0/toaster.min.js"></script>
 <script src="~/Scripts/MyApp.js"></script>
+
 <div class="jumbotron">
+    <toaster-container></toaster-container>
     <h1>Medals in LoL</h1>
     <input type="text" id="nombre_invocador" placeholder="Nombre de invocador" ng-model="User.invocador"/>
-    <select ng-model="server" required="required" 
+    <select ng-model="server" required="required"
             ng-options="server as server.label for server in servers"></select>
- @*   @Html.DropDownList("server", null, htmlAttributes: new { @class = "form-control", @ng_model = "User.server" , @ng_options = "server  as product.label for product in products" })*@
-    <input type="button" id="enviar"  ng-click="GetDatosInvocador(server.label,User.invocador)" value="Enviar"/>
+    @*   @Html.DropDownList("server", null, htmlAttributes: new { @class = "form-control", @ng_model = "User.server" , @ng_options = "server  as product.label for product in products" })*@
+    <input type="button" id="enviar" ng-click="GetDatosInvocador(server.label,User.invocador)" value="Enviar"/>
 </div>
 
 <div class="row">
@@ -18,7 +24,16 @@
     
     <div class="col-md-12"id="resultados" ng-hide="loading || noencontrado">
         <h2 id="nick">{{Medallas.nick}} </h2>
-        <h3 id="partidas_jugadas" ng-if="Medallas">Has jugado {{Medallas.lastindexgame}} partidas clásificatorias </h3>
+     @*   <h3 id="partidas_jugadas" ng-if="Medallas">Has jugado {{Medallas.lastindexgame}} partidas clásificatorias </h3>*@
+        <div ng-if="doble_doble">
+            TIENES UN DOBLE DOBLE
+        </div>
+        <div ng-if="doble_doble==false && Medallas">
+          NO TIENES UN DOBLE DOBLE
+        </div>
+        <div ng-if="pentakill">
+         TIENES UNA PENTAKILL
+        </div>
         <div ng-if="bronze">
             <img src="~/images/tier/bronze.png"/>
         </div>
@@ -47,7 +62,7 @@
 <script type="text/javascript">
     $("#nombre_invocador").keyup(function (event) {
         if (event.keyCode == 13) {
-            $("#enviar").click();
+            $("#enviar").submit();
         }
     });
     //$('#loadingDiv')

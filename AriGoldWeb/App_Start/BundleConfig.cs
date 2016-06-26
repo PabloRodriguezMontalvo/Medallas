@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace AriGoldWeb
 {
@@ -9,7 +8,17 @@ namespace AriGoldWeb
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                       "~/Scripts/angular.min.js",
+"https://code.angularjs.org/1.2.0/angular-animate.min.js",
+"~/Scripts/angular-ui/ui-bootstrap.min.js",
+"~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"
+
+
+
+
+
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));

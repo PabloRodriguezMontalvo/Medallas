@@ -1,13 +1,12 @@
-﻿namespace AriGoldWeb.Models
+﻿namespace LoLAgencyApi.Models
 {
-    public class UsuarioViewModel
+    public class Usuario
     {
-
         public int Id { get; set; }
         public long num_invocador { get; set; }
         public string nick { get; set; }
         public bool pentakill { get; set; }
-
+       
         public int lastindexgame { get; set; }
         //public int doblekill { get; set; }
         //public int triplekill { get; set; }

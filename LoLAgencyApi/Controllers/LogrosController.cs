@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Season = RiotSharp.StatsEndpoint.Season;
@@ -23,7 +24,7 @@ namespace LoLAgencyApi.Controllers
 
         //  public IRiotClient riotClient = new RiotClient(ConfigurationManager.AppSettings["apikey"]);
 
-
+            
         public IRepositorio<Usuario, UsuarioViewModel> Repositorio { get; set; }
         public List<RawStat> _stats = new List<RawStat>();
         public RiotApi api = RiotSharp.RiotApi.GetInstance(ConfigurationManager.AppSettings["apikey"]);
@@ -89,7 +90,7 @@ namespace LoLAgencyApi.Controllers
 
         }
         [HttpGet]
-        private IEnumerable<RawStat> DameListaPartidas(long jugador, Region servidor, int lastindex)
+        private  List<RawStat> DameListaPartidas(long jugador, Region servidor, int lastindex)
         {
             _stats = ListadePartidas(jugador, servidor, lastindex);
 
@@ -137,7 +138,7 @@ namespace LoLAgencyApi.Controllers
                 //  var total_games = riotClient.MatchList.GetMatchListBySummonerId(servidor, jugador, null, Enums.GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5x5.ToString(), Temporada).TotalGames;
                 //    matchList = riotClient.MatchList.GetMatchListBySummonerId(servidor, jugador, null, Enums.GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5x5.ToString(), Temporada, null, null, lastindex, total_games);
                 //     matchList = riotClient.MatchList.GetMatchListBySummonerId(servidor, jugador, null, Enums.GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5x5.ToString(), Temporada, null, null, null, null);
-                var matchList = api.GetRecentGames(servidor, jugador);
+                var matchList =   api.GetRecentGames(servidor, jugador);
                 estadisticas = CargarEstadisticas(matchList, jugador, servidor);
 
 
@@ -221,7 +222,6 @@ namespace LoLAgencyApi.Controllers
             var id = 10;
 
             var response = DameIdInvocador(jugador, region);
-            if (response != null)
             {
 
                 num_invocador = response;
@@ -265,7 +265,7 @@ namespace LoLAgencyApi.Controllers
 
                 }
 
-                stats = ListadePartidas(num_invocador, region, Logros.lastindexgame);
+                stats = DameListaPartidas(num_invocador, region, Logros.lastindexgame);
                 bool boom = stats.Exists(o => o.NexusKilled == true);
                 //Logros.doblekill += stats.Count(o => o.DoubleKills > 0);
                 //Logros.triplekill += stats.Count(o => o.TripleKills > 0);
@@ -339,10 +339,6 @@ namespace LoLAgencyApi.Controllers
 
                 return Ok(Logros);
 
-            }
-            else
-            {
-                return NotFound();
             }
         }
     }

@@ -9,10 +9,10 @@ namespace AriGoldWeb
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                       "~/Scripts/angular.min.js",
-"https://code.angularjs.org/1.2.0/angular-animate.min.js",
-"~/Scripts/angular-ui/ui-bootstrap.min.js",
-"~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"
+                       "~/Scripts/angular.js",
+                       "~/Scripts/angular-animate.js",
+"~/Scripts/angular-ui/ui-bootstrap.js",
+"~/Scripts/angular-ui/ui-bootstrap-tpls.js"
 
 
 

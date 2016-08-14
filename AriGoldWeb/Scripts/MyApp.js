@@ -13,7 +13,24 @@ app.factory('crudMedals', function ($http) {
 
         return Users;
     };
+    crudUserObj.GetNotificacions = function (num_invocador) {
+        var notificaciones;
 
+        notificaciones = $http({ method: 'Get', url: '/Home/LeerNotificaciones/', params: { num_invocador: num_invocador } }).
+        then(function (response) {
+            if (response.data == "") {
+               
+                return ""; 
+
+            } else {
+                 
+                return response.data;
+               
+            }
+        });
+      
+        return notificaciones;
+    };
     crudUserObj.GetDatosInvocador = function (server, nombre) {
         var Users;
 

@@ -40,6 +40,7 @@ namespace AriGoldWeb
             //container.RegisterType<iServicios<UsuarioViewModel>, Servicios<UsuarioViewModel>>(
             //    new InjectionConstructor("http://arigoldapi.azurewebsites.net/api/Logros")
             //    );  
+           
             container.RegisterType<iServicios<UsuarioViewModel>, Servicios<UsuarioViewModel>>(
                 new InjectionConstructor("http://localhost:60844/api/Logros")
                 );

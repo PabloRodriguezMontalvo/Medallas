@@ -136,6 +136,35 @@ namespace AriGoldWeb.Utils
 
             return lista;
         }
+        public TModelo DameNotificaciones(long num_invocador)
+        {
+            TModelo lista;
+            var cl = WebRequest.Create(UrlBase + "/DameNotificaciones/" + num_invocador);
+            cl.Method = "GET";
+            HttpWebResponse res;
+            try
+            {
+                res = (HttpWebResponse)cl.GetResponse();
+            }
+            catch (WebException ex)
+            {
+
+                res = ex.Response as HttpWebResponse;
+            }
+
+            using (var stream = res.GetResponseStream())
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    var resultado = reader.ReadToEnd();
+                    lista = Serializacion<TModelo>.
+                        Deserializar(resultado);
+
+                }
+            }
+
+            return lista;
+        }
         public TModelo Logros(string jugador, string servidor)
         {
             TModelo lista;

@@ -215,6 +215,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\NotificacionesViewModel.cs" />
     <Compile Include="Models\UsuarioViewmodel.cs" />
     <Compile Include="Models\ViewModel\iViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

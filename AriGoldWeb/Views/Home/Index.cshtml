@@ -15,6 +15,7 @@
             ng-options="server as server.label for server in servers"></select>
     @*   @Html.DropDownList("server", null, htmlAttributes: new { @class = "form-control", @ng_model = "User.server" , @ng_options = "server  as product.label for product in products" })*@
     <input type="button" id="enviar" ng-click="GetDatosInvocador(server.label,User.invocador)" value="Enviar"/>
+   @* <input type="button" id="enviar" ng-click="GetNotificacions(User.invocador)" value="Enviar" /> TODO: CREAR SISTEMA DE REGISTRO *@
 </div>
 
 <div class="row">

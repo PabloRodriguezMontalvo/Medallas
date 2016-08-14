@@ -19,6 +19,7 @@ namespace AriGoldWeb.Controllers
         {
             var server = new List<Servidores>();
             var unserver = new Servidores();
+          
 
             unserver.Id = 1;
             unserver.Name = "EUW";
@@ -26,7 +27,8 @@ namespace AriGoldWeb.Controllers
            
             
             ViewBag.server = new SelectList(server,"Id","Name");
-          
+        
+
             return View();
         }
 
@@ -38,9 +40,18 @@ namespace AriGoldWeb.Controllers
             var data = _servicio.Logros(nombre, server);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-        
-            
-           
+
+
+
+        [HttpGet]
+        public JsonResult LeerNotificaciones(long num_invocador)
+        {
+            //var notificaciones = DependencyResolver.Current.
+            //GetService<Servicios<NotificacionesViewModel>>();
+            //var data = notificaciones.Get().Where(o => o.leido == false && o.usuario.num_invocador==num_invocador).ToList();
+            //data.ForEach(o => o.leido = true);
+            //return Json(data, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult GetAll()
         {

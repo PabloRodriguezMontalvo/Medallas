@@ -38,6 +38,9 @@ namespace AriGoldWeb.Controllers
             var data = _servicio.Logros(nombre, server);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        
+            
+           
         [HttpGet]
         public JsonResult GetAll()
         {

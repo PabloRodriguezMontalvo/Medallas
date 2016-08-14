@@ -62,6 +62,7 @@ namespace LoLAgencyApi.Controllers
         {
             var data = Repositorio.Get(o => o.num_invocador == num_invocador).FirstOrDefault();
 
+
             return (data);
 
 
@@ -205,6 +206,94 @@ namespace LoLAgencyApi.Controllers
                  detalles_partida.Participants.ToList().First(o => o.ParticipantId == participant_id);
             return participantes.Stats;
         }
+        private void ComprobarLogros(UsuarioViewModel User, List<RawStat> stats)
+        {
+            if(User.doblekill==false)
+            User.doblekill = stats.Exists(o => o.DoubleKills > 0);
+            if (User.triplekill == false)
+                User.triplekill = stats.Exists(o => o.TripleKills > 0);
+            if (User.quadrakill == false)
+                User.quadrakill = stats.Exists(o => o.QuadraKills > 0);
+            if (User.pentakill == false)
+                User.pentakill = stats.Exists(o => o.PentaKills > 0);
+            if (User.doble_doble == false)
+                User.doble_doble = stats.Exists(o => o.ChampionsKilled > 9 && o.Assists > 9);
+            if (User.asesino == false)
+            User.asesino = stats.Exists(o => o.ChampionsKilled > 2 && o.ChampionsKilled < 6);
+            if (User.monstruo == false)
+                User.monstruo = stats.Exists(o => o.ChampionsKilled > 5 && o.ChampionsKilled < 10);
+            if (User.heroe == false)
+                User.heroe = stats.Exists(o => o.ChampionsKilled > 9 && o.ChampionsKilled < 12);
+            if (User.conquistador == false)
+                User.conquistador = stats.Exists(o => o.ChampionsKilled > 11);
+            if (User.observer == false)
+                User.observer = stats.Exists(o => o.WardPlaced > 9 && o.WardPlaced < 15);
+            if (User.ward_dispenser == false)
+                User.ward_dispenser = stats.Exists(o => o.WardPlaced > 14 && o.WardPlaced < 20);
+            if (User.nofog == false)
+                User.nofog = stats.Exists(o => o.WardPlaced > 19 && o.WardPlaced < 25);
+            if (User.sauron == false)
+                User.sauron = stats.Exists(o => o.WardKilled > 24);
+            if (User.cantseeme == false)
+                User.cantseeme = stats.Exists(o => o.WardKilled > 4 && o.WardKilled < 10);
+            if (User.john_cena == false)
+                User.john_cena = stats.Exists(o => o.WardKilled > 9 && o.WardKilled < 15);
+            if (User.piquete_ojos == false)
+                User.piquete_ojos = stats.Exists(o => o.WardKilled > 14 && o.WardKilled < 20);
+            if (User.cegador == false)
+                User.cegador = stats.Exists(o => o.WardKilled > 19);
+            if (User.asesino == false)
+                User.bulletproof = stats.Exists(o => o.NumDeaths == 3);
+            if (User.asesino == false)
+                User.die_hard = stats.Exists(o => o.NumDeaths == 5);
+            if (User.asesino == false)
+                User.mc_hammer = stats.Exists(o => o.NumDeaths == 4);
+            if (User.asesino == false)
+                User.intocable = stats.Exists(o => o.NumDeaths == 2);
+            if (User.asesino == false)
+                User.invencible = stats.Exists(o => o.NumDeaths == 1);
+            if (User.asesino == false)
+                User.indestructible = stats.Exists(o => o.NumDeaths == 0);
+            if (User.asesino == false)
+                User.trasto =
+                stats.Exists(o => o.TotalDamageDealtToChampions >= 3000 && o.TotalDamageDealtToChampions < 5000);
+            if (User.asesino == false)
+                User.rebel =
+                stats.Exists(o => o.TotalDamageDealtToChampions >= 5000 && o.TotalDamageDealtToChampions < 10000);
+            if (User.asesino == false)
+                User.macarra =
+                stats.Exists(o => o.TotalDamageDealtToChampions >= 10000 && o.TotalDamageDealtToChampions < 15000);
+            if (User.asesino == false)
+                User.maton =
+                stats.Exists(o => o.TotalDamageDealtToChampions >= 15000 && o.TotalDamageDealtToChampions < 20000);
+            if (User.asesino == false)
+                User.overlord = stats.Exists(o => o.TotalDamageDealtToChampions >= 20000);
+
+
+            Repositorio.Actualizar(User);
+
+
+            //User.nick = jugador;
+
+            //User.server = id_server;
+            //User.num_invocador = num_invocador;
+            //User.division = division;
+
+            float sum = 1;
+            float kills = 0;
+            float assist = 0;
+            foreach (var o in stats)
+            {
+                assist += o.Assists;
+                kills += o.ChampionsKilled;
+
+                sum += o.NumDeaths;
+            }
+            User.kda += (assist + kills) / sum;
+
+
+        }
+
         [HttpGet]
         public IHttpActionResult DameTodo(string jugador, string servidor)
         {
@@ -249,16 +338,19 @@ namespace LoLAgencyApi.Controllers
                 var stats = new List<RawStat>();
 
                 var Logros = new UsuarioViewModel();
-                bool existe = false;
 
                 if (data == null)
                 {
-                    existe = false;
+                    Logros.num_invocador = num_invocador;
+                    Logros.division = division;
+                    Logros.server = id_server;
+                    Repositorio.Add(Logros);
+                
 
                 }
                 else
                 {
-                    existe = true;
+                
 
 
                     Logros = data;
@@ -266,77 +358,7 @@ namespace LoLAgencyApi.Controllers
                 }
 
                 stats = DameListaPartidas(num_invocador, region, Logros.lastindexgame);
-                bool boom = stats.Exists(o => o.NexusKilled == true);
-                //Logros.doblekill += stats.Count(o => o.DoubleKills > 0);
-                //Logros.triplekill += stats.Count(o => o.TripleKills > 0);
-                //Logros.quadrakill += stats.Count(o => o.QuadraKills > 0);
-                Logros.pentakill = stats.Exists(o => o.PentaKills > 0);
-                Logros.doble_doble = stats.Exists(o => o.ChampionsKilled > 9 && o.Assists > 9);
-                //Logros.asesino += stats.Count(o => o.ChampionsKilled > 2 && o.ChampionsKilled < 6);
-                //Logros.monstruo += stats.Count(o => o.ChampionsKilled > 5 && o.ChampionsKilled < 10);
-                //Logros.heroe += stats.Count(o => o.ChampionsKilled > 9 && o.ChampionsKilled < 12);
-                //Logros.conquistador += stats.Count(o => o.ChampionsKilled > 11);
-                //Logros.observer += stats.Count(o => o.WardPlaced > 9 && o.WardPlaced < 15);
-                //Logros.ward_dispenser += stats.Count(o => o.WardPlaced > 14 && o.WardPlaced < 20);
-                //Logros.nofog += stats.Count(o => o.WardPlaced > 19 && o.WardPlaced < 25);
-                //Logros.sauron += stats.Count(o => o.WardKilled > 24);
-                //Logros.cantseeme += stats.Count(o => o.WardKilled > 4 && o.WardKilled < 10);
-                //Logros.john_cena += stats.Count(o => o.WardKilled > 9 && o.WardKilled < 15);
-                //Logros.piquete_ojos += stats.Count(o => o.WardKilled > 14 && o.WardKilled < 20);
-                //Logros.cegador += stats.Count(o => o.WardKilled > 19);
-                //Logros.bulletproof += stats.Count(o => o.NumDeaths == 3);
-                //Logros.die_hard += stats.Count(o => o.NumDeaths == 5);
-                //Logros.mc_hammer += stats.Count(o => o.NumDeaths == 4);
-                //Logros.intocable += stats.Count(o => o.NumDeaths == 2);
-                //Logros.invencible += stats.Count(o => o.NumDeaths == 1);
-                //Logros.indestructible += stats.Count(o => o.NumDeaths == 0);
-                //Logros.trasto +=
-                //    stats.Count(o => o.TotalDamageDealtToChampions >= 3000 && o.TotalDamageDealtToChampions < 5000);
-                //Logros.rebel +=
-                //    stats.Count(o => o.TotalDamageDealtToChampions >= 5000 && o.TotalDamageDealtToChampions < 10000);
-                //Logros.macarra +=
-                //    stats.Count(o => o.TotalDamageDealtToChampions >= 10000 && o.TotalDamageDealtToChampions < 15000);
-                //Logros.maton +=
-                //    stats.Count(o => o.TotalDamageDealtToChampions >= 15000 && o.TotalDamageDealtToChampions < 20000);
-                //Logros.overlord += stats.Count(o => o.TotalDamageDealtToChampions >= 20000);
-
-
-                Logros.lastindexgame = stats.Count;
-
-
-                Logros.nick = jugador;
-
-                Logros.server = id_server;
-                Logros.num_invocador = num_invocador;
-                Logros.division = division;
-
-                float sum = 1;
-                float kills = 0;
-                float assist = 0;
-                foreach (var o in stats)
-                {
-                    assist += o.Assists;
-                    kills += o.ChampionsKilled;
-
-                    sum += o.NumDeaths;
-                }
-                Logros.kda += (assist + kills) / sum;
-
-
-
-                if (existe == true)
-
-                {
-
-                    Repositorio.Actualizar(Logros);
-                }
-                else
-                {
-
-                    Repositorio.Add(Logros);
-                }
-
-
+                ComprobarLogros(Logros, stats);
                 return Ok(Logros);
 
             }

@@ -1,8 +1,8 @@
-﻿using GenericRepository;
+﻿
 
 namespace LoLAgencyApi.Models
 {
-    public class Usuario:IEntity
+    public class Usuario
     {
         public int Id { get; set; }
         public long num_invocador { get; set; }
@@ -30,7 +30,7 @@ namespace LoLAgencyApi.Models
         public bool bulletproof { get; set; }
         public bool die_hard { get; set; }
         public bool mc_hammer { get; set; }
-        public bool boolocable { get; set; }
+        public bool intocable { get; set; }
         public bool invencible { get; set; }
         public bool indestructible { get; set; }
         public bool trasto { get; set; }

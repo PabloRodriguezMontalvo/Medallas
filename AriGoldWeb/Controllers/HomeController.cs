@@ -46,11 +46,11 @@ namespace AriGoldWeb.Controllers
         [HttpGet]
         public JsonResult LeerNotificaciones(long num_invocador)
         {
-            //var notificaciones = DependencyResolver.Current.
-            //GetService<Servicios<NotificacionesViewModel>>();
-            //var data = notificaciones.Get().Where(o => o.leido == false && o.usuario.num_invocador==num_invocador).ToList();
+            var notificaciones = DependencyResolver.Current.
+            GetService<Servicios<NotificacionesViewModel>>();
+            var data = notificaciones.DameNotificaciones(num_invocador);
             //data.ForEach(o => o.leido = true);
-            //return Json(data, JsonRequestBehavior.AllowGet);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult GetAll()

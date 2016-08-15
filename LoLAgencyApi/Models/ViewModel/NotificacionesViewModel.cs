@@ -15,12 +15,24 @@ namespace LoLAgencyApi.Models.ViewModel
         public DateTime fecha { get; set; }
         public Notificacion ToBaseDatos()
         {
-            throw new NotImplementedException();
+            var data = new Notificacion()
+            {
+                texto = texto,
+                usuario = usuario,
+                leido = leido,
+                fecha = fecha,
+
+            };
+            return data;
         }
 
         public void FromBaseDatos(Notificacion modelo)
         {
-            throw new NotImplementedException();
+            id = modelo.id;
+            texto = modelo.texto;
+            usuario = modelo.usuario;
+            leido = modelo.leido;
+            fecha = modelo.fecha;
         }
 
         public void UpdateBaseDatos(Notificacion modelo)
@@ -30,7 +42,7 @@ namespace LoLAgencyApi.Models.ViewModel
 
         public object[] GetKeys()
         {
-            throw new NotImplementedException();
+            return new object[] { id };
         }
     }
 }

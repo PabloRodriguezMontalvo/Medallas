@@ -249,6 +249,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\LogrosController.cs" />
+    <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -268,6 +269,14 @@
     <Compile Include="Migrations\201608141124180_notificaciones.Designer.cs">
       <DependentUpon>201608141124180_notificaciones.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608151020284_funciona.cs" />
+    <Compile Include="Migrations\201608151020284_funciona.Designer.cs">
+      <DependentUpon>201608151020284_funciona.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608151031173_notificacionecontext.cs" />
+    <Compile Include="Migrations\201608151031173_notificacionecontext.Designer.cs">
+      <DependentUpon>201608151031173_notificacionecontext.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -282,6 +291,11 @@
     <Compile Include="Repositorio\iRepositorio.cs" />
     <Compile Include="Repositorio\Repositorio.cs" />
     <Compile Include="Repositorio\ViewModel\iViewModel.cs" />
+    <Compile Include="Resource1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource1.resx</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\iServicios.cs" />
     <Compile Include="Servicios\Serializacion.cs" />
     <Compile Include="Servicios\Servicios.cs" />
@@ -321,6 +335,16 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608141124180_notificaciones.resx">
       <DependentUpon>201608141124180_notificaciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608151020284_funciona.resx">
+      <DependentUpon>201608151020284_funciona.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608151031173_notificacionecontext.resx">
+      <DependentUpon>201608151031173_notificacionecontext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource1.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

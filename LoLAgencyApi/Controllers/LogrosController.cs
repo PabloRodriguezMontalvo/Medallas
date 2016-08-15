@@ -193,7 +193,7 @@ namespace LoLAgencyApi.Controllers
                     var notis = new NotificacionesViewModel()
                     {
                         usuario = User,
-                        texto = "Has conseguido el logro Doble Kill",
+                        texto = Resource1.DobleKill,
                         leido = false,
                         fecha = DateTime.Now
                     };

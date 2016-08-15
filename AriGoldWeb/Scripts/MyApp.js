@@ -92,6 +92,9 @@ app.controller('medalsController', function ($scope, crudMedals, toaster) {
     $scope.GetDatosInvocador = function (server, nombre) {
         $scope.loading = true;
         crudMedals.GetDatosInvocador(server, nombre).then(function (result) {
+            crudMedals.GetNotificacions(result.num_invocador).then(function (result) {
+                $scope.notificaciones = result;
+            });
             $scope.bronze = false;
             $scope.silver = false;
             $scope.gold = false;

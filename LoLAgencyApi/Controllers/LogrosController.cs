@@ -61,18 +61,18 @@ namespace LoLAgencyApi.Controllers
                 return NotFound();
        
             var userInDb = service.GetUserFromBD(IdSummoner.Id);
+         
+
+            var stats = service.GetGames(IdSummoner, user.lastindexgame);
 
 
-            var stats = service.GetGames(IdSummoner, servidor, user.lastindexgame);
-
-
-            var divi = service.GetDivision(IdSummoner.Id, servidor);
+            var divi = service.GetDivision(IdSummoner);
             if (divi == 0)
                 userInDb.division = "Unranked";
             else
 
                 userInDb.division = divi.ToString();
-            userInDb.lastindexgame = service.TotalGames(IdSummoner.Id, servidor);
+            userInDb.lastindexgame = service.TotalGames(IdSummoner);
             userInDb.num_invocador = IdSummoner.Id;
             userInDb.nick = jugador;
             userInDb.server = GetIdRegion(servidor);

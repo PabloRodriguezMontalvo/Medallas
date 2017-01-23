@@ -17,8 +17,8 @@ namespace LoLAgencyApi.Servicios
     {
         Summoner GetIdSummoner(string jugador, Region servidor);
         UsuarioViewModel GetUserFromBD(long num_invocador);
-        RiotSharp.LeagueEndpoint.Enums.Tier GetDivision(long jugador, Region servidor);
-        List<RawStat> GetGames(Summoner jugador, Region servidor, int lastindex);
+        RiotSharp.LeagueEndpoint.Enums.Tier GetDivision(Summoner jugador);
+        List<RawStat> GetGames(Summoner jugador, int lastindex);
         float GetKDA(List<ParticipantStats> stats);
         List<RawStat> GetStats(List<Game> matchList);
         int GetPlayerIDOnGame(MatchDetail detalles_partida, long id);

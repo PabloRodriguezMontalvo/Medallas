@@ -118,11 +118,12 @@ namespace LoLAgencyApi.Servicios
             return User;
         }
 
-        public Tier GetDivision(long jugador, Region servidor)
+        public Tier GetDivision(Summoner jugador)
         {
             try
             {
-                var liga = api.GetSummoner(servidor, (int)jugador).GetLeagues().FirstOrDefault().Tier;
+             
+                var liga = jugador.GetLeagues().First().Tier;
 
 
                 return liga;
@@ -133,7 +134,7 @@ namespace LoLAgencyApi.Servicios
             }
         }
 
-        public List<RawStat> GetGames(Summoner jugador, Region servidor, int lastindex)
+        public List<RawStat> GetGames(Summoner jugador, int lastindex)
         {
 
             List<RawStat> estadisticas = new List<RawStat>();
@@ -142,7 +143,7 @@ namespace LoLAgencyApi.Servicios
             {
 
 
-                var matchList = SoloLasDiezUltimas(servidor, jugador);
+                var matchList = SoloLasDiezUltimas(jugador);
              
               estadisticas = GetStats(matchList);
             }
@@ -155,15 +156,15 @@ namespace LoLAgencyApi.Servicios
             return estadisticas;
         }
 
-        public int TotalGames(long jugador, Region servidor)
+        public int TotalGames(Summoner jugador)
         {
             List<Season> seasons = new List<Season>();
             seasons.Add(Season.Season2017);
             List<Queue> cola = new List<Queue>();
             cola.Add(Queue.RankedSolo5x5);
-            return api.GetMatchList(servidor, jugador, null, cola, seasons).TotalGames;
+            return jugador.GetStatsSummaries().Count;
         }
-        private List<Game> SoloLasDiezUltimas(Region servidor, Summoner jugador)
+        private List<Game> SoloLasDiezUltimas(Summoner jugador)
         {
 
             var a= jugador.GetRecentGames();

@@ -55,7 +55,7 @@ namespace LoLAgencyApi.Models.ViewModel
                 cegador = cegador,
                 conquistador = conquistador,
                 die_hard = die_hard,
-
+                division = division,
                 doblekill = doblekill,
                 heroe = heroe,
                 john_cena = john_cena,

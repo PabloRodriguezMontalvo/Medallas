@@ -25,8 +25,8 @@
     
     <div class="col-md-12"id="resultados" ng-hide="loading || noencontrado">
         <h2 id="nick">{{Medallas.nick}} </h2>
-     @*   <h3 id="partidas_jugadas" ng-if="Medallas">Has jugado {{Medallas.lastindexgame}} partidas clásificatorias </h3>*@
-        @*<div ng-if="doble_doble">
+       <h3 id="partidas_jugadas" ng-if="Medallas">Has jugado {{Medallas.lastindexgame}} partidas clásificatorias </h3>
+        <div ng-if="doble_doble">
             TIENES UN DOBLE DOBLE
         </div>
         <div ng-if="doble_doble==false && Medallas">
@@ -34,7 +34,7 @@
         </div>
         <div ng-if="pentakill">
          TIENES UNA PENTAKILL
-        </div>*@
+        </div>
         <div ng-if="bronze">
             <img src="~/images/tier/bronze.png"/>
         </div>

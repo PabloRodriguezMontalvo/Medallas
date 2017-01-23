@@ -33,8 +33,16 @@ namespace LoLAgencyApi.Repositorio
         public virtual int Actualizar(TViewModel model)
         {
             var obj = DbSet.Find(model.GetKeys());
-            
-            model.UpdateBaseDatos(obj);
+            if(obj==null)
+            { 
+              var m = model.ToBaseDatos();
+            DbSet.Add(m);
+            }
+            else
+            {
+                model.UpdateBaseDatos(obj);
+            }
+       
 
             try
             {

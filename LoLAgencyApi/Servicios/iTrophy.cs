@@ -17,13 +17,13 @@ namespace LoLAgencyApi.Servicios
     {
         Summoner GetIdSummoner(string jugador, Region servidor);
         UsuarioViewModel GetUserFromBD(long num_invocador);
-        RiotSharp.LeagueEndpoint.Enums.Tier GetDivision(Summoner jugador);
-        List<RawStat> GetGames(Summoner jugador, int lastindex);
+        string GetDivision();
+        List<RawStat> GetGames();
         float GetKDA(List<ParticipantStats> stats);
         List<RawStat> GetStats(List<Game> matchList);
         int GetPlayerIDOnGame(MatchDetail detalles_partida, long id);
         ParticipantStats GetStatsDetails(MatchDetail detalles_partida, int participant_id);
         UsuarioViewModel CheckTrophy(UsuarioViewModel User, List<RawStat> stats);
-        int TotalGames(long num_invocador, Region servidor);
+        int TotalGames();
     }
 }

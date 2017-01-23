@@ -18,15 +18,16 @@ namespace LoLAgencyApi.Controllers
 
         public RiotApi apiriot = RiotApi.GetInstance(ConfigurationManager.AppSettings["apikey"]);
 
+        public iTrophy service { get; set; }
+        public IRepositorio<Usuario, UsuarioViewModel> Repositorio { get; set; }
+
+
         public LogrosController()
         {
             Repositorio = new Repositorio<Usuario, UsuarioViewModel>(new ApplicationDbContext());
             Notificaciones = new Repositorio<Notificacion, NotificacionesViewModel>(new ApplicationDbContext());
-            service = new Trophy();
+        
         }
-
-        public iTrophy service { get; set; }
-        public IRepositorio<Usuario, UsuarioViewModel> Repositorio { get; set; }
 
         //  public IRiotClient riotClient = new RiotClient(ConfigurationManager.AppSettings["apikey"]);
 
@@ -56,23 +57,19 @@ namespace LoLAgencyApi.Controllers
         
 
             var IdSummoner = service.GetIdSummoner(jugador, servidor);
-           
-            if (IdSummoner.Id == 0)
+            
+            if (IdSummoner==null)
                 return NotFound();
-       
+            service = new Trophy(IdSummoner);
             var userInDb = service.GetUserFromBD(IdSummoner.Id);
          
 
-            var stats = service.GetGames(IdSummoner, user.lastindexgame);
+            var stats = service.GetGames();
 
 
-            var divi = service.GetDivision(IdSummoner);
-            if (divi == 0)
-                userInDb.division = "Unranked";
-            else
-
-                userInDb.division = divi.ToString();
-            userInDb.lastindexgame = service.TotalGames(IdSummoner);
+            userInDb.division = service.GetDivision();
+           
+            userInDb.lastindexgame = service.TotalGames();
             userInDb.num_invocador = IdSummoner.Id;
             userInDb.nick = jugador;
             userInDb.server = GetIdRegion(servidor);
@@ -82,8 +79,7 @@ namespace LoLAgencyApi.Controllers
                 Repositorio.Actualizar(userInDb); 
             }
          
-         
-        
+    
 
             return Ok(user);
         }

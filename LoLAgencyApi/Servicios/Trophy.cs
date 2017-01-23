@@ -26,11 +26,18 @@ namespace LoLAgencyApi.Servicios
         public RiotApi api;
 
         public IRepositorio<Usuario, UsuarioViewModel> Repositorio { get; set; }
-        public Trophy()
+        private Summoner _jugador;
+        public Trophy(Summoner jugador)
         {
             Repositorio = new Repositorio<Usuario, UsuarioViewModel>(new ApplicationDbContext());
-            api =   RiotApi.GetInstance(ConfigurationManager.AppSettings["apikey"]);
-         }
+            api = RiotApi.GetInstance(ConfigurationManager.AppSettings["apikey"]);
+            _jugador = jugador;
+        }
+        //public Trophy()
+        //{
+        //    Repositorio = new Repositorio<Usuario, UsuarioViewModel>(new ApplicationDbContext());
+        //    api =   RiotApi.GetInstance(ConfigurationManager.AppSettings["apikey"]);
+        // }
 
         public UsuarioViewModel CheckTrophy(UsuarioViewModel User, List<RawStat> stats)
         {
@@ -118,15 +125,15 @@ namespace LoLAgencyApi.Servicios
             return User;
         }
 
-        public Tier GetDivision(Summoner jugador)
+        public string GetDivision()
         {
             try
             {
              
-                var liga = jugador.GetLeagues().First().Tier;
+                var liga = _jugador.GetLeagues().First().Tier;
 
 
-                return liga;
+                return liga.ToString();
             }
             catch (Exception)
             {
@@ -134,7 +141,7 @@ namespace LoLAgencyApi.Servicios
             }
         }
 
-        public List<RawStat> GetGames(Summoner jugador, int lastindex)
+        public List<RawStat> GetGames()
         {
 
             List<RawStat> estadisticas = new List<RawStat>();
@@ -143,7 +150,7 @@ namespace LoLAgencyApi.Servicios
             {
 
 
-                var matchList = SoloLasDiezUltimas(jugador);
+                var matchList = SoloLasDiezUltimas(_jugador);
              
               estadisticas = GetStats(matchList);
             }
@@ -156,13 +163,13 @@ namespace LoLAgencyApi.Servicios
             return estadisticas;
         }
 
-        public int TotalGames(Summoner jugador)
+        public int TotalGames()
         {
             List<Season> seasons = new List<Season>();
             seasons.Add(Season.Season2017);
             List<Queue> cola = new List<Queue>();
             cola.Add(Queue.RankedSolo5x5);
-            return jugador.GetStatsSummaries().Count;
+            return _jugador.GetStatsSummaries().Count;
         }
         private List<Game> SoloLasDiezUltimas(Summoner jugador)
         {

@@ -26,31 +26,31 @@
     <div class="col-md-12"id="resultados" ng-hide="loading || noencontrado">
         <h2 id="nick">{{Medallas.nick}} </h2>
        <h3 id="partidas_jugadas" ng-if="Medallas">Has jugado {{Medallas.lastindexgame}} partidas clásificatorias </h3>
-        <div ng-if="doble_doble">
+        <div ng-if="Medallas.doble_doble">
             TIENES UN DOBLE DOBLE
         </div>
-        <div ng-if="doble_doble==false && Medallas">
+        <div ng-if="Medallas.doble_doble==false && Medallas">
           NO TIENES UN DOBLE DOBLE
         </div>
-        <div ng-if="pentakill">
+        <div ng-if="Medallas.pentakill">
          TIENES UNA PENTAKILL
         </div>
-        <div ng-if="bronze">
+        <div ng-if="Medallas.division =='Bronze'">
             <img src="~/images/tier/bronze.png"/>
         </div>
 
-        <div ng-if="silver">
+        <div ng-if="Medallas.division =='Silver'">
             <img src="~/images/tier/silver.png" />
         </div>
 
-        <div ng-if="gold">
+        <div ng-if="Medallas.division =='Gold'">
             <img src="~/images/tier/gold.png"/>
         </div>
-        <div ng-if="platinum">
+        <div ng-if="Medallas.division =='Platinum'">
             <img src="~/images/tier/platinum.png"/>
         </div>
 
-        <div ng-if="diamond">
+        <div ng-if="Medallas.division =='Diamond'">
             <img src="~/images/tier/diamond.png" />
         </div>
         
@@ -61,9 +61,10 @@
 </div>
 
 <script type="text/javascript">
-    $("#nombre_invocador").keyup(function (event) {
-        if (event.keyCode == 13) {
-            $("#enviar").submit();
+    $("#nombre_invocador").keypress(function (event) {
+        if (event.which == 13) {
+            $("#enviar").click();
+            return false;
         }
     });
     //$('#loadingDiv')

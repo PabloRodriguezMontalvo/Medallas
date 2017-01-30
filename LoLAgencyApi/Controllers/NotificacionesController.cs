@@ -12,28 +12,28 @@ namespace LoLAgencyApi.Controllers
 {
     public class NotificacionesController : ApiController
     {
-        public IRepositorio<Notificacion, NotificacionesViewModel> Notificaciones { get; set; }
+        //public IRepositorio<Notificacion, NotificacionesViewModel> Notificaciones { get; set; }
 
-        // GET: api/Notificaciones
-        public NotificacionesController()
-        {
+        //// GET: api/Notificaciones
+        //public NotificacionesController()
+        //{
           
-            Notificaciones = new Repositorio<Notificacion, NotificacionesViewModel>(new ApplicationDbContext());
-        }
-        [HttpGet]
-        public IHttpActionResult DameNotificaciones(long num_invocador)
-        {
+        //    Notificaciones = new Repositorio<Notificacion, NotificacionesViewModel>(new ApplicationDbContext());
+        //}
+        //[HttpGet]
+        //public IHttpActionResult DameNotificaciones(long num_invocador)
+        //{
 
-            var data = Notificaciones.Get(o => o.leido == false && o.usuario.num_invocador == num_invocador).ToList();
-            if (data != null)
-            {
-                data.ForEach(o => o.leido = true);
-                return Ok(data);
-            }
+        //    var data = Notificaciones.Get(o => o.leido == false && o.usuario.num_invocador == num_invocador).ToList();
+        //    if (data != null)
+        //    {
+        //        data.ForEach(o => o.leido = true);
+        //        return Ok(data);
+        //    }
 
-            else
-                return NotFound();
-        }
+        //    else
+        //        return NotFound();
+        //}
 
 
         public IEnumerable<string> Get()

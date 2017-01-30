@@ -194,12 +194,22 @@ namespace AriGoldWeb.Utils
 
             return lista;
         }
-        public TModelo GetAll()
+        public TModelo Logros(long num_invocador)
         {
             TModelo lista;
-            var cl = WebRequest.Create(UrlBase + "/GetAll/");
+            var cl = WebRequest.Create(UrlBase + "/GetUserInBD/" + num_invocador);
             cl.Method = "GET";
-            var res = cl.GetResponse();
+            HttpWebResponse res;
+            try
+            {
+                res = (HttpWebResponse)cl.GetResponse();
+            }
+            catch (WebException ex)
+            {
+
+                res = ex.Response as HttpWebResponse;
+            }
+
             using (var stream = res.GetResponseStream())
             {
                 using (var reader = new StreamReader(stream))
@@ -213,5 +223,24 @@ namespace AriGoldWeb.Utils
 
             return lista;
         }
+        //public TModelo GetAll()
+        //{
+        //    TModelo lista;
+        //    var cl = WebRequest.Create(UrlBase + "/GetAll/");
+        //    cl.Method = "GET";
+        //    var res = cl.GetResponse();
+        //    using (var stream = res.GetResponseStream())
+        //    {
+        //        using (var reader = new StreamReader(stream))
+        //        {
+        //            var resultado = reader.ReadToEnd();
+        //            lista = Serializacion<TModelo>.
+        //                Deserializar(resultado);
+
+        //        }
+        //    }
+
+        //    return lista;
+        // }
     }
 }

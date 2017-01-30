@@ -44,9 +44,9 @@ namespace AriGoldWeb
             container.RegisterType<iServicios<UsuarioViewModel>, Servicios<UsuarioViewModel>>(
                 new InjectionConstructor("http://localhost:60844/api/Logros")
                 );
-            container.RegisterType<iServicios<NotificacionesViewModel>, Servicios<NotificacionesViewModel>>(
-               new InjectionConstructor("http://localhost:60844/api/Notificaciones")
-               );
+            //container.RegisterType<iServicios<NotificacionesViewModel>, Servicios<NotificacionesViewModel>>(
+            //   new InjectionConstructor("http://localhost:60844/api/Notificaciones")
+            //   );
 
         }
     }

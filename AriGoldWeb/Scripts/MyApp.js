@@ -13,12 +13,12 @@ app.factory('crudMedals', function ($http) {
 
         return Users;
     };
-    crudUserObj.GetNotificacions = function (num_invocador) {
+    crudUserObj.GetDatosBD = function (num_invocador) {
         var notificaciones;
 
-        notificaciones = $http({ method: 'Get', url: '/Home/LeerNotificaciones/', params: { num_invocador: num_invocador } }).
+        notificaciones = $http({ method: 'Get', url: '/Home/GetUserInBD/', params: { num_invocador: num_invocador } }).
         then(function (response) {
-            if (response.data == "") {
+            if (response.data === "") {
                
                 return ""; 
 
@@ -31,12 +31,12 @@ app.factory('crudMedals', function ($http) {
       
         return notificaciones;
     };
-    crudUserObj.GetDatosInvocador = function (server, nombre) {
+    crudUserObj.GetNews = function (server, nombre) {
         var Users;
 
-        Users = $http({ method: 'Get', url: '/Home/GetDatos/', params: { server: server, nombre: nombre } }).
+        Users = $http({ method: 'Get', url: '/Home/GetNews/', params: { server: server, nombre: nombre } }).
         then(function (response) {
-                if (response.data == "") {
+                if (response.data === "") {
                
                     return ""; 
 
@@ -91,64 +91,18 @@ app.controller('medalsController', function ($scope, crudMedals, toaster) {
   
     $scope.GetDatosInvocador = function (server, nombre) {
         $scope.loading = true;
-        crudMedals.GetDatosInvocador(server, nombre).then(function (result) {
-            crudMedals.GetNotificacions(result.num_invocador).then(function (result) {
-                $scope.notificaciones = result;
-            });
-            $scope.bronze = false;
-            $scope.silver = false;
-            $scope.gold = false;
-            $scope.platinum = false;
-            $scope.diamond = false;
-            if (result == "") {
+        crudMedals.GetNews(server, nombre).then(function (result) {
+
+            if (result === "") {
                 toaster.pop('error', "No se ha encontrado", "ni una puta mierda");
                 $scope.noencontrado = true;
             } else {
+                $scope.Medallas = result;
                 $scope.noencontrado = false;
-                toaster.pop('success', "OH YEAH", "BABY");
-                if (result.doble_doble == true) {
-                    $scope.doble_doble = true;
-                }
-                if (result.pentakill == true) {
-                    $scope.doble_doble = true;
-                }
-               if (result.division == 'Bronze') {
-                $scope.bronze = true;
-                $scope.silver = false;
-                $scope.gold = false;
-                $scope.platinum = false;
-                $scope.diamond = false;
+                toaster.pop('success', $scope.Medallas.lastindexgame, $scope.Medallas.lastindexgame);
 
-            }
-            if (result.division == 'Silver') {
-                $scope.bronze = false;
-                $scope.silver = true;
-                $scope.gold = false;
-                $scope.platinum = false;
-                $scope.diamond = false;
-            }
-            if (result.division == 'Gold') {
-                $scope.bronze = false;
-                $scope.silver = false;
-                $scope.gold = true;
-                $scope.platinum = false;
-                $scope.diamond = false;
-            }
-            if (result.division == 'Platinum') {
-                $scope.bronze = false;
-                $scope.silver = false;
-                $scope.gold = false;
-                $scope.platinum = true;
-                $scope.diamond = false;
-            }
-            if (result.division == 'Diamond') {
-                $scope.bronze = false;
-                $scope.silver = false;
-                $scope.gold = false;
-                $scope.platinum = false;
-                $scope.diamond = true;
-            }
-            $scope.Medallas = result;
+            
+          
             $scope.loading = false;  
             }
            

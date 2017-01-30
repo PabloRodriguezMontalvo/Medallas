@@ -8,12 +8,13 @@ using LoLAgencyApi.Repositorio;
 using LoLAgencyApi.Servicios;
 using RiotSharp;
 using RiotSharp.GameEndpoint;
+using RiotSharp.SummonerEndpoint;
 
 namespace LoLAgencyApi.Controllers
 {
     public class LogrosController : ApiController
     {
-        private const string Temporada = "SEASON2016";
+  
         public List<RawStat> _stats = new List<RawStat>();
 
         public RiotApi apiriot = RiotApi.GetInstance(ConfigurationManager.AppSettings["apikey"]);
@@ -25,38 +26,51 @@ namespace LoLAgencyApi.Controllers
         public LogrosController()
         {
             Repositorio = new Repositorio<Usuario, UsuarioViewModel>(new ApplicationDbContext());
-            Notificaciones = new Repositorio<Notificacion, NotificacionesViewModel>(new ApplicationDbContext());
+            //Notificaciones = new Repositorio<Notificacion, NotificacionesViewModel>(new ApplicationDbContext());
         
         }
 
         //  public IRiotClient riotClient = new RiotClient(ConfigurationManager.AppSettings["apikey"]);
 
 
-        public IRepositorio<Notificacion, NotificacionesViewModel> Notificaciones { get; set; }
+        //public IRepositorio<Notificacion, NotificacionesViewModel> Notificaciones { get; set; }
 
 
-        [HttpGet]
-        public IHttpActionResult DameNotificaciones(long num_invocador)
+        //[HttpGet]
+        //public IHttpActionResult DameNotificaciones(long num_invocador)
+        //{
+        //    var data = Notificaciones.Get(o => o.leido == false && o.usuario.num_invocador == num_invocador).ToList();
+        //    if (data != null)
+        //    {
+        //        data.ForEach(o => o.leido = true);
+        //        return Ok(data);
+        //    }
+
+        //    return NotFound();
+        //}
+
+        public Summoner GetIdSummoner(string jugador, Region servidor)
         {
-            var data = Notificaciones.Get(o => o.leido == false && o.usuario.num_invocador == num_invocador).ToList();
-            if (data != null)
+            try
             {
-                data.ForEach(o => o.leido = true);
-                return Ok(data);
+                var summoner = apiriot.GetSummoner(servidor, jugador);
+                return summoner;
             }
-
-            return NotFound();
+            catch (RiotSharpException ex)
+            {
+                return null;
+                // Handle the exception however you want.
+            }
+            //  var summoner = riotClient.Summoner.GetSummonersByName(servidor, jugador).FirstOrDefault().Value;
         }
-
-
         [HttpGet]
         public IHttpActionResult DameTodo(string jugador, Region servidor)
         {
             //TODO: ARREGLAR ESTO
             var user = new UsuarioViewModel();
-        
+            var nuevos= new UsuarioViewModel();
 
-            var IdSummoner = service.GetIdSummoner(jugador, servidor);
+            var IdSummoner =GetIdSummoner(jugador, servidor);
             
             if (IdSummoner==null)
                 return NotFound();
@@ -72,8 +86,9 @@ namespace LoLAgencyApi.Controllers
             userInDb.lastindexgame = service.TotalGames();
             userInDb.num_invocador = IdSummoner.Id;
             userInDb.nick = jugador;
-            userInDb.server = GetIdRegion(servidor);
+            userInDb.server = GetIdRegion(IdSummoner.Region);
             userInDb = service.CheckTrophy(userInDb, stats);
+              nuevos = service.CheckTrophy(nuevos, stats);
             if (userInDb!=null)
             {
                 Repositorio.Actualizar(userInDb); 
@@ -81,7 +96,20 @@ namespace LoLAgencyApi.Controllers
          
     
 
-            return Ok(user);
+            return Ok(nuevos);
+        }
+        [HttpGet]
+        public IHttpActionResult GetUserInBD(long num_invocador)
+        {
+       
+            var userInDb = service.GetUserFromBD(num_invocador);
+            var stats = service.GetGames();
+
+            userInDb = service.CheckTrophy(userInDb, stats);
+
+
+
+            return Ok(userInDb);
         }
 
         private static int GetIdRegion(Region servidor)

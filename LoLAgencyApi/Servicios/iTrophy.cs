@@ -15,7 +15,7 @@ namespace LoLAgencyApi.Servicios
 {
   public  interface iTrophy
     {
-        Summoner GetIdSummoner(string jugador, Region servidor);
+        //Summoner GetIdSummoner(string jugador, Region servidor);
         UsuarioViewModel GetUserFromBD(long num_invocador);
         string GetDivision();
         List<RawStat> GetGames();
@@ -25,5 +25,6 @@ namespace LoLAgencyApi.Servicios
         ParticipantStats GetStatsDetails(MatchDetail detalles_partida, int participant_id);
         UsuarioViewModel CheckTrophy(UsuarioViewModel User, List<RawStat> stats);
         int TotalGames();
+   
     }
 }

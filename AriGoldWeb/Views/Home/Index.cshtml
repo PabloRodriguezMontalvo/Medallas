@@ -5,8 +5,23 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/1.1.0/toaster.min.js"></script>
+<script src="~/Scripts/moment.js"></script>
+<script src="~/Scripts/angular-moment.min.js"></script>
 <script src="~/Scripts/MyApp.js"></script>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
+
+<style >
+.mosaicflow__column {
+  float: left;
+}
+.mosaicflow__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+</style>
 <div class="jumbotron">
     <toaster-container></toaster-container>
     <h1>Medals in LoL</h1>
@@ -20,47 +35,98 @@
 
 <div class="row">
     <div class="spinner" ng-show="loading">
-        <img id="mySpinner" src="/images/loading/spinner.gif"/>
+        <img id="mySpinner" src="/images/loading/spinner.gif" />
     </div>
-    
-    <div class="col-md-12"id="resultados" ng-hide="loading || noencontrado">
-        <h2 id="nick">{{Medallas.nick}} </h2>
-       <h3 id="partidas_jugadas" ng-if="Medallas">Has jugado {{Medallas.lastindexgame}} partidas clásificatorias </h3>
-        <div ng-if="Medallas.doble_doble">
-            TIENES UN DOBLE DOBLE
-        </div>
-        <div ng-if="Medallas.doble_doble==false && Medallas">
-          NO TIENES UN DOBLE DOBLE
-        </div>
-        <div ng-if="Medallas.pentakill">
-         TIENES UNA PENTAKILL
-        </div>
-        <div ng-if="Medallas.division =='Bronze'">
-            <img src="~/images/tier/bronze.png"/>
-        </div>
+    <div ng-if="Medallas!==undefined">
+      
 
-        <div ng-if="Medallas.division =='Silver'">
-            <img src="~/images/tier/silver.png" />
-        </div>
+        <div class="col-md-12" id="resultados" ng-hide="loading || noencontrado">
+            <h2 id="nick">{{Medallas.nick}} </h2>
+            <h3 id="partidas_jugadas" ng-if="Medallas">Has jugado {{Medallas.lastindexgame}} partidas clásificatorias </h3>
+            <div ng-if="Medallas.division =='Bronze'">
+                <img src="~/images/tier/bronze.png" />
+            </div>
 
-        <div ng-if="Medallas.division =='Gold'">
-            <img src="~/images/tier/gold.png"/>
-        </div>
-        <div ng-if="Medallas.division =='Platinum'">
-            <img src="~/images/tier/platinum.png"/>
-        </div>
+            <div ng-if="Medallas.division =='Silver'">
+                <img src="~/images/tier/silver.png" />
+            </div>
 
-        <div ng-if="Medallas.division =='Diamond'">
-            <img src="~/images/tier/diamond.png" />
+            <div ng-if="Medallas.division =='Gold'">
+                <img src="~/images/tier/gold.png" />
+            </div>
+            <div ng-if="Medallas.division =='Platinum'">
+                <img src="~/images/tier/platinum.png" />
+            </div>
+
+            <div ng-if="Medallas.division =='Diamond'">
+                <img src="~/images/tier/diamond.png" />
+            </div>
+            <div class="grid">
+               
+               <div ng-if="Medallas.Stats.asesino!==null">
+                    <div class="grid-item">
+                        <img src="~/images/mosaic/mosaico_01.jpg"  title="Image 1">
+                    </div>
+
+                </div>
+                <div ng-if="Medallas.Stats.asesino===null">
+                    <div class="grid-item">
+                        <img src="~/images/interrogation.jpg"  title="Image 1">
+
+                    </div>
+                </div>
+
+
+                <div ng-if="Medallas.Stats.pentakill!==null">
+                    <div class="grid-item">
+                        <img src="~/images/mosaic/mosaico_02.jpg" title="Image 2">
+                    </div>
+
+                </div>
+                <div ng-if="Medallas.Stats.pentakill===null">
+                    <div class="grid-item">
+                        <img src="~/images/interrogation.jpg" title="Image 2">
+
+                    </div>
+                </div>
+
+            </div>
+
+       
+
         </div>
-        
+        <div class="spinner" ng-show="noencontrado">
+            No encontrado
+        </div>
     </div>
-    <div class="spinner" ng-show="noencontrado">
-        No encontrado
+    <div ng-if="Medallas===undefined"  ng-hide="loading">
+        <div class="grid">
+
+            <div class="grid-item">
+
+                <img src="~/images/interrogation.jpg" title="Image 1">
+
+            </div>
+            <div class="grid-item">
+                <img src="~/images/interrogation.jpg" title="Image 1">
+
+            </div>
+        </div>
     </div>
-</div>
+    </div>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('.grid').masonry({
+            // options
+            itemSelector: '.grid-item',
+         
+            fitWidth: true
+
+        });
+    });
+
+   
     $("#nombre_invocador").keypress(function (event) {
         if (event.which == 13) {
             $("#enviar").click();

@@ -1,4 +1,10 @@
-﻿var app = angular.module('MyApp', ['toaster', 'ngAnimate']);
+﻿
+
+var app = angular.module('MyApp', ['toaster','angularMoment', 'ngAnimate']);
+
+
+
+
 
 app.factory('crudMedals', function ($http) {
     crudUserObj = {};
@@ -55,7 +61,7 @@ app.factory('crudMedals', function ($http) {
     return crudUserObj;
 });
 
-app.controller('medalsController', function ($scope, crudMedals, toaster) {
+app.controller('medalsController', function ($scope, crudMedals, toaster, moment) {
   
     
     //crudMedals.getAll().then(function (result) {
@@ -97,13 +103,47 @@ app.controller('medalsController', function ($scope, crudMedals, toaster) {
                 toaster.pop('error', "No se ha encontrado", "ni una puta mierda");
                 $scope.noencontrado = true;
             } else {
-                $scope.Medallas = result;
+                $scope.Medallas = {};
+                $scope.Medallas.Stats = {};
                 $scope.noencontrado = false;
-                toaster.pop('success', $scope.Medallas.lastindexgame, $scope.Medallas.lastindexgame);
+                toaster.pop('success', result.lastindexgame, result.lastindexgame);
+                $scope.Hoy = moment();
+                for (var att in result) {
+                    if (result.hasOwnProperty(att)) {
+                        if (result[att] != null) {
+                            if (result[att].toString().substring(0,5) === "/Date") {
 
-            
-          
-            $scope.loading = false;  
+                                var fecha = moment(new Date(parseInt(result[att].substr(6))));
+                                if (moment(fecha).isBefore(moment()))
+                                    {
+                                    result[att] = moment();
+                                $scope.Medallas.Stats[att] = result[att];
+                                }
+                                } else {
+                                $scope.Medallas[att] = result[att];
+                            }
+                        }
+                    }
+                }
+                
+                  
+                    //if (result.asesino != null) {
+                    //    var fecha = moment(new Date(parseInt(result.asesino.substr(6))));
+                    //    if (moment(fecha).isBefore(moment()))
+                    //        $scope.Medallas.asesino = moment();
+                    //}
+
+
+                    //if (result.pentakill != null)
+                    //{
+                    //    var fecha = moment(new Date(parseInt(result.pentakill.substr(6))));
+                    //    if (moment(fecha).isBefore(moment()))
+                    //        $scope.Medallas.pentakill = moment();
+                    //}
+
+              
+                $scope.loading = false;
+              
             }
            
         }).finally(function () {

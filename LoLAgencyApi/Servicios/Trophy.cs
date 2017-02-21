@@ -39,23 +39,59 @@ namespace LoLAgencyApi.Servicios
         //    api =   RiotApi.GetInstance(ConfigurationManager.AppSettings["apikey"]);
         // }
 
-        public UsuarioViewModel CheckTrophy(UsuarioViewModel User, List<RawStat> stats)
+        public UsuarioViewModel CheckTrophy(UsuarioViewModel User, List<Game> stats, List<MatchDetail> matchDetail )
         {
-            if (User.doblekill.Date != DateTime.Today)
-                //User.doblekill = stats.Exists(o => o.DoubleKills > 0);
+         
+        
+            if (User.doblekill == null)
+               
             {
-                var d= stats.First(o => o.DoubleKills > 0);
-                if (d != null)
-                    User.doblekill = DateTime.Now;
+                    var d = stats.FirstOrDefault(o => o.Statistics.DoubleKills > 0);
+                    if (d != null)
+
+                        User.doblekill = DateTime.Now; 
             }
-            //if (User.triplekill == false)
-            //    User.triplekill = stats.Exists(o => o.TripleKills > 0);
-            //if (User.quadrakill == false)
-            //    User.quadrakill = stats.Exists(o => o.QuadraKills > 0);
-            //if (User.pentakill == false)
-            //    User.pentakill = stats.Exists(o => o.PentaKills > 0);
-            //if (User.doble_doble == false)
-            //    User.doble_doble = stats.Exists(o => o.ChampionsKilled > 9 && o.Assists > 9);
+            if (User.triplekill == null)
+          
+            {
+                var d = stats.FirstOrDefault(o => o.Statistics.TripleKills > 0);
+                if (d != null)
+
+                    User.triplekill = DateTime.Now;
+            }
+            if (User.quadrakill == null)
+
+            {
+                var d = stats.FirstOrDefault(o => o.Statistics.QuadraKills > 0);
+                if (d != null)
+
+                    User.quadrakill = DateTime.Now;
+            }
+            if (User.pentakill == null)
+
+            {
+                var d = stats.FirstOrDefault(o => o.Statistics.PentaKills > 0);
+                if (d != null)
+
+                    User.pentakill = DateTime.Now;
+            }
+            if (User.doble_doble == null)
+
+            {
+                var d = stats.FirstOrDefault(o => o.Statistics.ChampionsKilled > 9 && o.Statistics.Assists > 9);
+                if (d != null)
+
+                    User.doble_doble = DateTime.Now;
+            }
+            if (User.asesino == null)
+
+            {
+                var d = stats.FirstOrDefault(o => o.Statistics.ChampionsKilled > 2 && o.Statistics.ChampionsKilled < 6);
+                if (d != null)
+
+                    User.asesino = DateTime.Now;
+            }
+     
             //if (User.asesino == false)
             //    User.asesino = stats.Exists(o => o.ChampionsKilled > 2 && o.ChampionsKilled < 6);
             //if (User.monstruo == false)
@@ -106,8 +142,8 @@ namespace LoLAgencyApi.Servicios
             //        stats.Exists(o => o.TotalDamageDealtToChampions >= 15000 && o.TotalDamageDealtToChampions < 20000);
             //if (User.asesino == false)
             //    User.overlord = stats.Exists(o => o.TotalDamageDealtToChampions >= 20000);
-          
-        
+
+
 
 
             //User.nick = jugador;
@@ -121,12 +157,14 @@ namespace LoLAgencyApi.Servicios
             float assist = 0;
             foreach (var o in stats)
             {
-                assist += o.Assists;
-                kills += o.ChampionsKilled;
+                assist += o.Statistics.Assists;
+                kills += o.Statistics.ChampionsKilled;
 
-                sum += o.NumDeaths;
+                sum += o.Statistics.NumDeaths;
             }
             User.kda += (assist + kills) / sum;
+         
+
             return User;
         }
 
@@ -146,18 +184,18 @@ namespace LoLAgencyApi.Servicios
             }
         }
 
-        public List<RawStat> GetGames()
+        public List<Game> GetGames()
         {
 
-            List<RawStat> estadisticas = new List<RawStat>();
+            List<Game> matchList = new List<Game>();
            
             try
             {
 
 
-                var matchList = SoloLasDiezUltimas(_jugador);
+                matchList = SoloLasDiezUltimas(_jugador);
              
-              estadisticas = GetStats(matchList);
+              //estadisticas = GetStats(matchList);
             }
             catch (Exception e)
             {
@@ -165,7 +203,7 @@ namespace LoLAgencyApi.Servicios
             }
 
 
-            return estadisticas;
+            return matchList;
         }
 
         public int TotalGames()
@@ -174,7 +212,7 @@ namespace LoLAgencyApi.Servicios
             seasons.Add(Season.Season2017);
             List<Queue> cola = new List<Queue>();
             cola.Add(Queue.RankedSolo5x5);
-            return _jugador.GetStatsSummaries().Count;
+            return _jugador.GetRecentGames().Count;
         }
         private List<Game> SoloLasDiezUltimas(Summoner jugador)
         {
@@ -273,6 +311,16 @@ namespace LoLAgencyApi.Servicios
                 return data;
             }
          
+        }
+
+        public List<MatchDetail>  GetDetallesCompletosPartida(List<Game> stats)
+        {
+            List<MatchDetail> Matchdetail = new List<MatchDetail>();
+            foreach (var stat in stats)
+            {
+              Matchdetail.Add(api.GetMatch(_jugador.Region, stat.GameId));
+             } 
+             return Matchdetail;   
         }
 
         //public UsuarioViewModel nuevos(out UsuarioViewModel o, List<RawStat> stats)

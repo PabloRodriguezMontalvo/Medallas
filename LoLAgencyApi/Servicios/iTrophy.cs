@@ -18,13 +18,13 @@ namespace LoLAgencyApi.Servicios
         //Summoner GetIdSummoner(string jugador, Region servidor);
         UsuarioViewModel GetUserFromBD(long num_invocador);
         string GetDivision();
-        List<RawStat> GetGames();
+        List<Game> GetGames();
         float GetKDA(List<ParticipantStats> stats);
         List<RawStat> GetStats(List<Game> matchList);
         int GetPlayerIDOnGame(MatchDetail detalles_partida, long id);
         ParticipantStats GetStatsDetails(MatchDetail detalles_partida, int participant_id);
-        UsuarioViewModel CheckTrophy(UsuarioViewModel User, List<RawStat> stats);
+        UsuarioViewModel CheckTrophy(UsuarioViewModel User, List<Game> stats, List<MatchDetail> matchDetails );
         int TotalGames();
-   
+       List<MatchDetail>  GetDetallesCompletosPartida(List<Game> stats);
     }
 }

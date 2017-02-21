@@ -68,8 +68,7 @@ namespace LoLAgencyApi.Controllers
         {
             //TODO: ARREGLAR ESTO
             var user = new UsuarioViewModel();
-            var nuevos= new UsuarioViewModel();
-
+          
             var IdSummoner =GetIdSummoner(jugador, servidor);
             
             if (IdSummoner==null)
@@ -87,8 +86,14 @@ namespace LoLAgencyApi.Controllers
             userInDb.num_invocador = IdSummoner.Id;
             userInDb.nick = jugador;
             userInDb.server = GetIdRegion(IdSummoner.Region);
-            userInDb = service.CheckTrophy(userInDb, stats);
-              nuevos = service.CheckTrophy(nuevos, stats);
+
+
+            var gameStats = service.GetDetallesCompletosPartida(stats);
+
+
+         
+            userInDb = service.CheckTrophy(userInDb, stats, gameStats);
+              //nuevos = service.CheckTrophy(nuevos, stats);
             if (userInDb!=null)
             {
                 Repositorio.Actualizar(userInDb); 
@@ -96,21 +101,21 @@ namespace LoLAgencyApi.Controllers
          
     
 
-            return Ok(nuevos);
-        }
-        [HttpGet]
-        public IHttpActionResult GetUserInBD(long num_invocador)
-        {
-       
-            var userInDb = service.GetUserFromBD(num_invocador);
-            var stats = service.GetGames();
-
-            userInDb = service.CheckTrophy(userInDb, stats);
-
-
-
             return Ok(userInDb);
         }
+        //[HttpGet]
+        //public IHttpActionResult GetUserInBD(long num_invocador)
+        //{
+       
+        //    var userInDb = service.GetUserFromBD(num_invocador);
+        //    var stats = service.GetGames();
+
+        //    userInDb = service.CheckTrophy(userInDb, stats);
+
+
+
+        //    return Ok(userInDb);
+        //}
 
         private static int GetIdRegion(Region servidor)
         {

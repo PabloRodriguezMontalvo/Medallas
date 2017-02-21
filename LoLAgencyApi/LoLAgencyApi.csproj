@@ -142,8 +142,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="RiotSharp, Version=2.6.0.27461, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RiotSharp.2.5.1\lib\portable-net45+win+wpa81\RiotSharp.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RiotSharp-develop\RiotSharp\bin\Release\RiotSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -277,12 +277,21 @@
     <Compile Include="Migrations\201608151031173_notificacionecontext.Designer.cs">
       <DependentUpon>201608151031173_notificacionecontext.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701310956011_cambiosdate.cs" />
+    <Compile Include="Migrations\201701310956011_cambiosdate.Designer.cs">
+      <DependentUpon>201701310956011_cambiosdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702062245134_fechasnullables.cs" />
+    <Compile Include="Migrations\201702062245134_fechasnullables.Designer.cs">
+      <DependentUpon>201702062245134_fechasnullables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ManageViewModel.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\ViewModel\StatsViewModel.cs" />
     <Compile Include="Models\ViewModel\UsuarioViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositorio\iRepositorio.cs" />
@@ -340,6 +349,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608151031173_notificacionecontext.resx">
       <DependentUpon>201608151031173_notificacionecontext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701310956011_cambiosdate.resx">
+      <DependentUpon>201701310956011_cambiosdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702062245134_fechasnullables.resx">
+      <DependentUpon>201702062245134_fechasnullables.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource1.resx">
       <Generator>ResXFileCodeGenerator</Generator>

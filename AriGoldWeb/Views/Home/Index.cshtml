@@ -9,17 +9,42 @@
 <script src="~/Scripts/angular-moment.min.js"></script>
 <script src="~/Scripts/MyApp.js"></script>
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-
+<script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
+<!-- or -->
+<script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.js"></script>
 
 <style >
-.mosaicflow__column {
+
+
+/* ---- grid ---- */
+
+.grid {
+  background: #DDD;
+}
+
+/* clear fix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- .grid-item ---- */
+
+.grid-sizer,
+.grid-item {
+  width: 10%;
+}
+
+.grid-item {
   float: left;
 }
-.mosaicflow__item img {
+
+.grid-item img {
   display: block;
   width: 100%;
-  height: auto;
 }
+
 
 </style>
 <div class="jumbotron">
@@ -62,32 +87,22 @@
                 <img src="~/images/tier/diamond.png" />
             </div>
             <div class="grid">
-               
-               <div ng-if="Medallas.Stats.asesino!==null">
-                    <div class="grid-item">
-                        <img src="~/images/mosaic/mosaico_01.jpg"  title="Image 1">
-                    </div>
-
-                </div>
-                <div ng-if="Medallas.Stats.asesino===null">
-                    <div class="grid-item">
-                        <img src="~/images/interrogation.jpg"  title="Image 1">
+                <div class="grid-sizer"></div>
+                <div ng-repeat="item in Medallas.Stats" class="grid-item">
+                    
+                    <div ng-if="item!==null">
+                     
+                            <img src="~/images/mosaic/mosaico_0{{$index+1}}.jpg" title="Image 1">
+                      
 
                     </div>
-                </div>
+                    <div ng-if="item===null">
+                       
+                            <img src="~/images/interrogation.jpg" title="Image 1">
 
-
-                <div ng-if="Medallas.Stats.pentakill!==null">
-                    <div class="grid-item">
-                        <img src="~/images/mosaic/mosaico_02.jpg" title="Image 2">
+                    
                     </div>
-
-                </div>
-                <div ng-if="Medallas.Stats.pentakill===null">
-                    <div class="grid-item">
-                        <img src="~/images/interrogation.jpg" title="Image 2">
-
-                    </div>
+             
                 </div>
 
             </div>
@@ -101,7 +116,7 @@
     </div>
     <div ng-if="Medallas===undefined"  ng-hide="loading">
         <div class="grid">
-
+            <div class="grid-sizer"></div>
             <div class="grid-item">
 
                 <img src="~/images/interrogation.jpg" title="Image 1">
@@ -116,16 +131,22 @@
     </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('.grid').masonry({
-            // options
-            itemSelector: '.grid-item',
-         
-            fitWidth: true
 
+    // layout Masonry after each image loads
+    var $grid = $('.grid').imagesLoaded(function () {
+        $grid.masonry({
+            itemSelector: '.grid-item',
+            columnWidth: 200,
+            percentPosition: true
+
+            // options...
         });
     });
-
+    $grid.on('click', '.grid-item', function () {
+        $(this).toggleClass('gigante');
+        // trigger layout after item size changes
+        $grid.masonry('layout');
+    });
    
     $("#nombre_invocador").keypress(function (event) {
         if (event.which == 13) {

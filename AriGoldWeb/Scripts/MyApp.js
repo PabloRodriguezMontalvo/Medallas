@@ -122,6 +122,8 @@ app.controller('medalsController', function ($scope, crudMedals, toaster, moment
                                 } else {
                                 $scope.Medallas[att] = result[att];
                             }
+                        } else {
+                            $scope.Medallas.Stats[att] = result[att];
                         }
                     }
                 }
